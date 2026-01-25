@@ -3,5 +3,8 @@ package com.stmc.sfgrecipeapp5.repositories;
 import com.stmc.sfgrecipeapp5.model.UnitOfMeasure;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface UnitOfMeasureRepository extends CrudRepository<UnitOfMeasure, Long> {
+    Optional<UnitOfMeasure> findByDescription(String description);
 }
