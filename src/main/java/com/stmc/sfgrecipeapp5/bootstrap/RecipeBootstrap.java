@@ -4,6 +4,7 @@ import com.stmc.sfgrecipeapp5.model.*;
 import com.stmc.sfgrecipeapp5.repositories.CategoryRepository;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import com.stmc.sfgrecipeapp5.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
@@ -28,10 +30,15 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Bootstrap data");
     }
 
     private List<Recipe> getRecipes() {
+        log.info("Starting getRecipes");
+
         List<Recipe> recipes = new ArrayList<>(2);
+
+        log.info("Created recipes list");
 
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
         if (!eachUomOptional.isPresent()) {
@@ -70,6 +77,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         UnitOfMeasure pinchUom = pinchUomOptional.get();
         UnitOfMeasure cupUom = cupUomOptional.get();
 
+        log.info("Requested UOMs");
+
         Optional<Category> mexicanCategoryOptional = categoryRepository.findByDescription("Mexican");
         if (!mexicanCategoryOptional.isPresent()) {
             throw new RuntimeException("'Mexican' Category Not found");
@@ -88,6 +97,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Category mexicanCategory = mexicanCategoryOptional.get();
         Category dinnersCategory = dinnersCategoryOptional.get();
         Category snacksAndAppetizersCategory = snacksAndAppetizersCategoryOptional.get();
+
+        log.info("Requested categories");
 
         Recipe guacamoleRecipe = new Recipe();
         guacamoleRecipe.setDescription("How to Make the Best Guacamole");
@@ -127,6 +138,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacamoleRecipe.getCategories().add(mexicanCategory);
 
         recipes.add(guacamoleRecipe);
+
+        log.info("Added guacamole recipe");
 
         Recipe tacosRecipe = new Recipe();
         tacosRecipe.setDescription("Tacos al Pastor");
@@ -192,6 +205,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         tacosRecipe.getCategories().add(mexicanCategory);
 
         recipes.add(tacosRecipe);
+
+        log.info("Added tacos recipe");
+
         return recipes;
     }
 }
