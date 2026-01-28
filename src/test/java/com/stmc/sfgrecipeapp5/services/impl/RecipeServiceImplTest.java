@@ -1,5 +1,7 @@
 package com.stmc.sfgrecipeapp5.services.impl;
 
+import com.stmc.sfgrecipeapp5.converters.RecipeCommandToRecipe;
+import com.stmc.sfgrecipeapp5.converters.RecipeToRecipeCommand;
 import com.stmc.sfgrecipeapp5.model.Recipe;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +22,16 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -50,6 +58,7 @@ class RecipeServiceImplTest {
         when(recipeService.getRecipes()).thenReturn(recipesData);
 
         Set<Recipe> recipes = recipeService.getRecipes();
+
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
