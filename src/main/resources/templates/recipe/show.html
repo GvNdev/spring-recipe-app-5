@@ -14,13 +14,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <body>
+    <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
     <div class="container-fluid" style="margin-top: 20px">
         <div class="row justify-content-center">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel-group">
                     <div class="card card-primary border border-primary" style="margin: 20px 0">
                         <div class="card-header bg-primary text-light">
-                            <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
                             <h7 class="card-title" th:text="${recipe.description}">Recipe Description Here!</h7>
                         </div>
                         <div class="card-body">
@@ -32,7 +32,6 @@
                                     <ul>
                                         <li th:remove="all">cat one</li>
                                         <li th:remove="all">cat two</li>
-                                        <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
                                         <li  th:each="category : ${recipe.categories}" th:text="${category.getDescription()}">cat three</li>
                                     </ul>
                                 </div>
@@ -42,14 +41,12 @@
                                     <h5>Prep Time:</h5>
                                 </div>
                                 <div class="col-md-3">
-                                    <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
                                     <h5 th:text="${recipe.prepTime} + ' min'">30 min</h5>
                                 </div>
                                 <div class="col-md-3">
                                     <h5>Difficulty:</h5>
                                 </div>
                                 <div class="col-md-3">
-                                    <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
                                     <h5 th:text="${recipe.difficulty}">Easy</h5>
                                 </div>
                             </div>
@@ -93,7 +90,6 @@
                                     <ul>
                                         <li th:remove="all">1 Cup of milk</li>
                                         <li th:remove="all">1 Teaspoon of chocolate</li>
-                                        <!--/*@thymesVar id="recipe" type="com.stmc.sfgrecipeapp5.model.Recipe"*/-->
                                         <li th:each="ingredient : ${recipe.ingredients}" th:text="${ingredient.getAmount() + ' ' + ingredient.uom.getDescription() + ' - ' + ingredient.getDescription()}">1 Teaspoon of Sugar</li>
                                     </ul>
                                 </div>
