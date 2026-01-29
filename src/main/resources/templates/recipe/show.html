@@ -21,19 +21,31 @@
                 <div class="panel-group">
                     <div class="card card-primary border border-primary" style="margin: 20px 0">
                         <div class="card-header bg-primary text-light">
-                            <h7 class="card-title" th:text="${recipe.description}">Recipe Description Here!</h7>
+                            <div class="row justify-content-center">
+                                <div class="col-md-3">
+                                    <h7 class="card-title" th:text="${recipe.description}">Recipe Description Here!</h7>
+                                </div>
+                                <div class="col-md-3">
+                                    <a class="btn btn-default" href="#" th:href="@{'/recipe/' + ${recipe.id} + '/image'}" role="button">Change Image</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row justify-content-center">
                                 <div class="col-md-3">
                                     <h5>Categories:</h5>
                                 </div>
-                                <div class="col-md-9">
+                                <div class="col-md-3">
                                     <ul>
                                         <li th:remove="all">cat one</li>
                                         <li th:remove="all">cat two</li>
                                         <li  th:each="category : ${recipe.categories}" th:text="${category.getDescription()}">cat three</li>
                                     </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="../../static/images/guacamole.webp"
+                                         th:src="@{/images/guacamole.webp}"
+                                         width="200" height="200">
                                 </div>
                             </div>
                             <div class="row justify-content-center">
