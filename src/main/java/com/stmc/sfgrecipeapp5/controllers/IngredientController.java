@@ -1,6 +1,8 @@
 package com.stmc.sfgrecipeapp5.controllers;
 
 import com.stmc.sfgrecipeapp5.commands.IngredientCommand;
+import com.stmc.sfgrecipeapp5.commands.RecipeCommand;
+import com.stmc.sfgrecipeapp5.commands.UnitOfMeasureCommand;
 import com.stmc.sfgrecipeapp5.services.IngredientService;
 import com.stmc.sfgrecipeapp5.services.RecipeService;
 import com.stmc.sfgrecipeapp5.services.UnitOfMeasureService;
@@ -37,6 +39,21 @@ public class IngredientController {
                                        @PathVariable("id") String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
         return "recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String newRecipeIngredient(@PathVariable("recipeId") String recipeId, Model model) {
+        RecipeCommand  recipeCommand = recipeService.findRecipeCommandById(Long.valueOf(recipeId));
+
+        // todo raise exception if null
+
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+        model.addAttribute("ingredient", ingredientCommand);
+        model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures());
+        return "recipe/ingredient/ingredientform";
     }
 
     @GetMapping
