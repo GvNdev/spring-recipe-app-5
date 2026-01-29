@@ -1,5 +1,6 @@
 package com.stmc.sfgrecipeapp5.services.impl;
 
+import com.stmc.sfgrecipeapp5.commands.RecipeCommand;
 import com.stmc.sfgrecipeapp5.converters.RecipeCommandToRecipe;
 import com.stmc.sfgrecipeapp5.converters.RecipeToRecipeCommand;
 import com.stmc.sfgrecipeapp5.model.Recipe;
@@ -45,6 +46,26 @@ class RecipeServiceImplTest {
         Recipe recipeReturned = recipeService.findById(1L);
 
         assertNotNull(recipeReturned, "Null recipe returned");
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    void getRecipeCommandById() {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+
+        RecipeCommand recipeCommandById = recipeService.findRecipeCommandById(1L);
+
+        assertNotNull(recipeCommandById, "Null recipe command returned");
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }
