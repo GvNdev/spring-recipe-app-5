@@ -2,6 +2,7 @@ package com.stmc.sfgrecipeapp5.converters;
 
 import com.stmc.sfgrecipeapp5.commands.IngredientCommand;
 import com.stmc.sfgrecipeapp5.model.Ingredient;
+import com.stmc.sfgrecipeapp5.model.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -24,6 +25,14 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
 
         final Ingredient ingredient = new Ingredient();
         ingredient.setId(ingredientCommand.getId());
+
+        if (ingredientCommand.getRecipeId() != null) {
+            Recipe recipe = new Recipe();
+            recipe.setId(ingredientCommand.getRecipeId());
+            ingredient.setRecipe(recipe);
+            recipe.addIngredient(ingredient);
+        }
+
         ingredient.setAmount(ingredientCommand.getAmount());
         ingredient.setDescription(ingredientCommand.getDescription());
         ingredient.setUom(uomConverter.convert(ingredientCommand.getUnitOfMeasure()));
