@@ -3,6 +3,7 @@ package com.stmc.sfgrecipeapp5.services.impl;
 import com.stmc.sfgrecipeapp5.commands.RecipeCommand;
 import com.stmc.sfgrecipeapp5.converters.RecipeCommandToRecipe;
 import com.stmc.sfgrecipeapp5.converters.RecipeToRecipeCommand;
+import com.stmc.sfgrecipeapp5.exceptions.NotFoundException;
 import com.stmc.sfgrecipeapp5.model.Recipe;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import com.stmc.sfgrecipeapp5.services.RecipeService;
@@ -39,7 +40,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long l) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe not found!");
+            throw new NotFoundException("Recipe not found!");
         }
         return recipeOptional.get();
     }

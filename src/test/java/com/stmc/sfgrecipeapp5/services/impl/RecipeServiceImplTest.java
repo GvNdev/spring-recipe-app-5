@@ -3,6 +3,7 @@ package com.stmc.sfgrecipeapp5.services.impl;
 import com.stmc.sfgrecipeapp5.commands.RecipeCommand;
 import com.stmc.sfgrecipeapp5.converters.RecipeCommandToRecipe;
 import com.stmc.sfgrecipeapp5.converters.RecipeToRecipeCommand;
+import com.stmc.sfgrecipeapp5.exceptions.NotFoundException;
 import com.stmc.sfgrecipeapp5.model.Recipe;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +49,20 @@ class RecipeServiceImplTest {
         assertNotNull(recipeReturned, "Null recipe returned");
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    void getRecipeByIdNotFound() {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        NotFoundException notFoundException = assertThrows(
+                NotFoundException.class,
+                () -> recipeService.findById(1L),
+                "Expected exception to throw an error. But it didn't"
+        );
+        assertTrue(notFoundException.getMessage().contains("Recipe not found"));
     }
 
     @Test
