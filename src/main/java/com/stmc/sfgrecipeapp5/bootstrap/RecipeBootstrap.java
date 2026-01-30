@@ -111,16 +111,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "\n" +
                 "3. Add the remaining ingredients to taste: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown. Add the chopped onion, cilantro, black pepper, and chilis. Chili peppers vary individually in their spiciness. So, start with a half of one chili pepper and add more to the guacamole to your desired degree of heat. Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste." +
                 "\n" +
-                "4. Serve immediately: If making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Garnish with slices of red radish or jicama strips. Serve with your choice of store-bought tortilla chips or make your own homemade tortilla chips. Refrigerate leftover guacamole up to 3 days." +
-                "\n" +
-                "\n" +
-                "Read more: https://www.simplyrecipes.com/recipes/perfect_guacamole/");
+                "4. Serve immediately: If making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Garnish with slices of red radish or jicama strips. Serve with your choice of store-bought tortilla chips or make your own homemade tortilla chips. Refrigerate leftover guacamole up to 3 days.");
 
         Notes guacamoleNotes = new Notes();
-        guacamoleNotes.setRecipeNotes("Chilling tomatoes dulls their flavor. So, if you want to add chopped tomato to your guacamole, add just before serving." +
-                "\n" +
-                "\n" +
-                "Read more: https://www.simplyrecipes.com/recipes/perfect_guacamole/");
+        guacamoleNotes.setRecipeNotes("Chilling tomatoes dulls their flavor. So, if you want to add chopped tomato to your guacamole, add just before serving.");
         guacamoleRecipe.setNotes(guacamoleNotes);
 
         guacamoleRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
@@ -136,6 +130,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         guacamoleRecipe.getCategories().add(snacksAndAppetizersCategory);
         guacamoleRecipe.getCategories().add(mexicanCategory);
+
+        guacamoleRecipe.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
+        guacamoleRecipe.setServings(4);
+        guacamoleRecipe.setSource("Simply Recipes");
 
         recipes.add(guacamoleRecipe);
 
@@ -166,16 +164,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "\n" +
                 "10. Slice the pork: Slice the pork thinly with a very sharp knife and place it on a serving platter. Scrape the marinade on top of the sliced pork." +
                 "\n" +
-                "11. Assemble the tacos: Bring the sliced pork, roasted pineapples, warm tortillas, chopped onions, cilantro, and lime wedges to the table so that everyone can build their own tacos. For the perfect al pastor taco, add a spoonful of pork into a tortilla, top with a slice or two of pineapple, garnish with onions and cilantro, and then a generous squeeze a lime. Enjoy!" +
-                "\n" +
-                "\n" +
-                "Read more: https://www.simplyrecipes.com/tacos-al-pastor-recipe-5496915");
+                "11. Assemble the tacos: Bring the sliced pork, roasted pineapples, warm tortillas, chopped onions, cilantro, and lime wedges to the table so that everyone can build their own tacos. For the perfect al pastor taco, add a spoonful of pork into a tortilla, top with a slice or two of pineapple, garnish with onions and cilantro, and then a generous squeeze a lime. Enjoy!");
 
         Notes tacosNotes =  new Notes();
-        tacosNotes.setRecipeNotes("Leftover pork can refrigerate tightly covered for up to 3 days. To reheat, I simply transfer it into a baking dish, cover with foil, and reheat in a 400°F oven for 15 to 20 minutes." +
-                "\n" +
-                "\n" +
-                "Read more: https://www.simplyrecipes.com/tacos-al-pastor-recipe-5496915");
+        tacosNotes.setRecipeNotes("Leftover pork can refrigerate tightly covered for up to 3 days. To reheat, I simply transfer it into a baking dish, cover with foil, and reheat in a 400°F oven for 15 to 20 minutes.");
         tacosRecipe.setNotes(tacosNotes);
 
         tacosRecipe.addIngredient(new Ingredient("water", new BigDecimal(3), cupUom));
@@ -203,6 +195,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.getCategories().add(dinnersCategory);
         tacosRecipe.getCategories().add(mexicanCategory);
+
+        tacosRecipe.setUrl("https://www.simplyrecipes.com/tacos-al-pastor-recipe-5496915");
+        tacosRecipe.setServings(6);
+        tacosRecipe.setSource("Simply Recipes");
 
         recipes.add(tacosRecipe);
 
