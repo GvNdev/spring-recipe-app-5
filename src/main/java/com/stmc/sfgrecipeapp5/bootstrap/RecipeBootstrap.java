@@ -37,97 +37,67 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     private void loadCategories() {
-        if (!categoryRepository.findByDescription("American").isPresent()) {
-            Category category1 = new Category();
-            category1.setDescription("American");
-            categoryRepository.save(category1);
-        }
+        Category category1 = new Category();
+        category1.setDescription("American");
+        categoryRepository.save(category1);
 
-        if (!categoryRepository.findByDescription("Italian").isPresent()) {
-            Category category2 = new Category();
-            category2.setDescription("Italian");
-            categoryRepository.save(category2);
-        }
+        Category category2 = new Category();
+        category2.setDescription("Italian");
+        categoryRepository.save(category2);
 
-        if (!categoryRepository.findByDescription("Mexican").isPresent()) {
-            Category category3 = new Category();
-            category3.setDescription("Mexican");
-            categoryRepository.save(category3);
-        }
+        Category category3 = new Category();
+        category3.setDescription("Mexican");
+        categoryRepository.save(category3);
 
-        if (!categoryRepository.findByDescription("Fast Food").isPresent()) {
-            Category category4 = new Category();
-            category4.setDescription("Fast Food");
-            categoryRepository.save(category4);
-        }
+        Category category4 = new Category();
+        category4.setDescription("Fast Food");
+        categoryRepository.save(category4);
 
-        if (!categoryRepository.findByDescription("Dinners").isPresent()) {
-            Category category5 = new Category();
-            category5.setDescription("Dinners");
-            categoryRepository.save(category5);
-        }
+        Category category5 = new Category();
+        category5.setDescription("Dinners");
+        categoryRepository.save(category5);
 
-        if (!categoryRepository.findByDescription("Snacks and Appetizers").isPresent()) {
-            Category category6 = new Category();
-            category6.setDescription("Snacks and Appetizers");
-            categoryRepository.save(category6);
-        }
+        Category category6 = new Category();
+        category6.setDescription("Snacks and Appetizers");
+        categoryRepository.save(category6);
     }
 
     private void loadUnitsOfMeasure() {
-        if (!unitOfMeasureRepository.findByDescription("Each").isPresent()) {
-            UnitOfMeasure uom1 = new UnitOfMeasure();
-            uom1.setDescription("Each");
-            unitOfMeasureRepository.save(uom1);
-        }
+        UnitOfMeasure uom1 = new UnitOfMeasure();
+        uom1.setDescription("Each");
+        unitOfMeasureRepository.save(uom1);
 
-        if (!unitOfMeasureRepository.findByDescription("Tablespoon").isPresent()) {
-            UnitOfMeasure uom2 = new UnitOfMeasure();
-            uom2.setDescription("Tablespoon");
-            unitOfMeasureRepository.save(uom2);
-        }
+        UnitOfMeasure uom2 = new UnitOfMeasure();
+        uom2.setDescription("Tablespoon");
+        unitOfMeasureRepository.save(uom2);
 
-        if (!unitOfMeasureRepository.findByDescription("Teaspoon").isPresent()) {
-            UnitOfMeasure uom3 = new UnitOfMeasure();
-            uom3.setDescription("Teaspoon");
-            unitOfMeasureRepository.save(uom3);
-        }
+        UnitOfMeasure uom3 = new UnitOfMeasure();
+        uom3.setDescription("Teaspoon");
+        unitOfMeasureRepository.save(uom3);
 
-        if (!unitOfMeasureRepository.findByDescription("Dash").isPresent()) {
-            UnitOfMeasure uom4 = new UnitOfMeasure();
-            uom4.setDescription("Dash");
-            unitOfMeasureRepository.save(uom4);
-        }
+        UnitOfMeasure uom4 = new UnitOfMeasure();
+        uom4.setDescription("Dash");
+        unitOfMeasureRepository.save(uom4);
 
-        if (!unitOfMeasureRepository.findByDescription("Pint").isPresent()) {
-            UnitOfMeasure uom5 = new UnitOfMeasure();
-            uom5.setDescription("Pint");
-            unitOfMeasureRepository.save(uom5);
-        }
+        UnitOfMeasure uom5 = new UnitOfMeasure();
+        uom5.setDescription("Pint");
+        unitOfMeasureRepository.save(uom5);
 
-        if (!unitOfMeasureRepository.findByDescription("Cup").isPresent()) {
-            UnitOfMeasure uom6 = new UnitOfMeasure();
-            uom6.setDescription("Cup");
-            unitOfMeasureRepository.save(uom6);
-        }
+        UnitOfMeasure uom6 = new UnitOfMeasure();
+        uom6.setDescription("Cup");
+        unitOfMeasureRepository.save(uom6);
 
-        if (!unitOfMeasureRepository.findByDescription("Pinch").isPresent()) {
-            UnitOfMeasure uom7 = new UnitOfMeasure();
-            uom7.setDescription("Pinch");
-            unitOfMeasureRepository.save(uom7);
-        }
+        UnitOfMeasure uom7 = new UnitOfMeasure();
+        uom7.setDescription("Pinch");
+        unitOfMeasureRepository.save(uom7);
 
-        if (!unitOfMeasureRepository.findByDescription("Ounce").isPresent()) {
-            UnitOfMeasure uom8 = new UnitOfMeasure();
-            uom8.setDescription("Ounce");
-            unitOfMeasureRepository.save(uom8);
-        }
+        UnitOfMeasure uom8 = new UnitOfMeasure();
+        uom8.setDescription("Ounce");
+        unitOfMeasureRepository.save(uom8);
 
-        if (!unitOfMeasureRepository.findByDescription("Pound").isPresent()) {
-            UnitOfMeasure uom9 = new UnitOfMeasure();
-            uom9.setDescription("Pound");
-            unitOfMeasureRepository.save(uom9);
-        }
+        UnitOfMeasure uom9 = new UnitOfMeasure();
+        uom9.setDescription("Pound");
+        unitOfMeasureRepository.save(uom9);
     }
 
     private List<Recipe> getRecipes() {
