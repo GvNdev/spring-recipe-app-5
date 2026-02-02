@@ -19,11 +19,6 @@ jobs:
     steps:
       - checkout
 
-      # Ensure Gradle wrapper is executable (sometimes needed on Linux containers)
-      - run:
-          name: Make Gradle wrapper executable
-          command: chmod -x ./gradlew
-
       - restore_cache:
           keys:
             - v2-gradle-deps-{{ checksum "build.gradle" }}-{{ checksum "settings.gradle" }}
@@ -40,6 +35,14 @@ jobs:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
           key: v2-gradle-deps-{{ checksum "build.gradle" }}-{{ checksum "settings.gradle" }}
+
+      # Ensure Gradle wrapper is executable (sometimes needed on Linux containers)
+      - run:
+          name: Make Gradle wrapper executable
+          command: |
+            ls -la ./gradlew
+            chmod -x ./gradlew
+            ls -la ./gradlew
 
       # Run tests + coverage (UT + IT) and generate merged JaCoCo XML
       - run:
