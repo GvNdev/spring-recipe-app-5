@@ -68,14 +68,15 @@ jobs:
             test -f target/site/jacoco/jacoco.xml && echo "OK: jacoco.xml exists" || (echo "MISSING jacoco.xml" && exit 1)
 
       - run:
-          name: Sanity check jacoco.xml content
+          name: Verify Codecov config file exists in repo root
           command: |
-            test -f target/site/jacoco/jacoco.xml
-            echo "packages:" && grep -c "<package " target/site/jacoco/jacoco.xml || true
-            echo "sourcefiles:" && grep -c "<sourcefile " target/site/jacoco/jacoco.xml || true
-            head -n 40 target/site/jacoco/jacoco.xml
+            pwd
+            ls -la
+            find . -maxdepth 2 -name "codecov.y*ml" -print
+            test -f codecov.yml && echo "OK: codecov.yml found" || (echo "MISSING codecov.yml in repo root" && exit 1)
 
-      - codecov/upload
+      - codecov/upload:
+          file: target/site/jacoco/jacoco.xml
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
