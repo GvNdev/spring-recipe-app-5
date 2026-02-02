@@ -76,7 +76,6 @@ jobs:
             test -f codecov.yml && echo "OK: codecov.yml found" || (echo "MISSING codecov.yml in repo root" && exit 1)
 
       - codecov/upload:
-          token: ${CODECOV_TOKEN}
           flags: "ut,it"
           verbose: true
 
