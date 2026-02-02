@@ -4,9 +4,6 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
-orbs:
-  codecov: codecov/codecov@5
-
 jobs:
   build:
     docker:
@@ -59,7 +56,14 @@ jobs:
             ls -a target/site/jacoco || true
             test -f target/site/jacoco/jacoco.xml && echo "OK: jacoco.xml exists" || (echo "MISSING jacoco.xml" && exit 1)
 
-      - codecov/upload
+      - run:
+          name: Upload to Codecov (CLI, fail-on-error)
+          command: |
+            curl -Os https://cli.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov --verbose upload-process --disable-search --fail-on-error \
+              -t "${}" \
+              -f target/sit/jacoco/jacoco.xml
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
