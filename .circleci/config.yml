@@ -57,6 +57,14 @@ jobs:
             test -f target/site/jacoco/jacoco.xml && echo "OK: jacoco.xml exists" || (echo "MISSING jacoco.xml" && exit 1)
 
       - run:
+          name: Sanity check jacoco.xml content
+          command: |
+            test -f target/site/jacoco/jacoco.xml
+            echo "packages:" && grep -c "<package " target/site/jacoco/jacoco.xml || true
+            echo "sourcefiles:" && grep -c "<sourcefile " target/site/jacoco/jacoco.xml || true
+            head -n 40 target/site/jacoco/jacoco.xml
+
+      - run:
           name: Upload to Codecov (CLI, fail-on-error)
           command: |
             curl -Os https://cli.codecov.io/latest/linux/codecov
