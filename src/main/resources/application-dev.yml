@@ -3,6 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/stmc_dev
     username: stmc_dev_user
     password: stmc
+    platform: mysql
   jpa:
     hibernate:
       ddl-auto: validate
