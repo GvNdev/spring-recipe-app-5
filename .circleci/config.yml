@@ -47,7 +47,7 @@ jobs:
       # Run tests + coverage (UT + IT) and generate merged JaCoCo XML
       - run:
           name: Test + Coverage (UT + IT)
-          command: bash ./gradlew --no-daemon clean check
+          command: bash ./gradlew --no-daemon --no-configuration-cache clean check
 
       - run:
           name: Prepare JUnit test results
