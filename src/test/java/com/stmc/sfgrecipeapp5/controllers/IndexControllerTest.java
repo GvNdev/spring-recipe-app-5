@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +50,7 @@ class IndexControllerTest {
         Set<Recipe> recipes = new HashSet<>();
         recipes.add(new Recipe());
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         recipes.add(recipe);
 
         when(recipeService.getRecipes()).thenReturn(recipes);

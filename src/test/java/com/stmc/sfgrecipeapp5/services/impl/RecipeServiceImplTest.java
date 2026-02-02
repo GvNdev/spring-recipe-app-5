@@ -39,15 +39,15 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeById() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
-        Recipe recipeReturned = recipeService.findById(1L);
+        Recipe recipeReturned = recipeService.findById("1");
 
         assertNotNull(recipeReturned, "Null recipe returned");
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, never()).findAll();
     }
 
@@ -55,11 +55,11 @@ class RecipeServiceImplTest {
     void getRecipeByIdNotFound() {
         Optional<Recipe> recipeOptional = Optional.empty();
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         NotFoundException notFoundException = assertThrows(
                 NotFoundException.class,
-                () -> recipeService.findById(1L),
+                () -> recipeService.findById("1"),
                 "Expected exception to throw an error. But it didn't"
         );
         assertTrue(notFoundException.getMessage().contains("Recipe not found"));
@@ -68,20 +68,20 @@ class RecipeServiceImplTest {
     @Test
     void getRecipeCommandById() {
         Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         RecipeCommand recipeCommand = new RecipeCommand();
-        recipeCommand.setId(1L);
+        recipeCommand.setId("1");
 
         when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
 
-        RecipeCommand recipeCommandById = recipeService.findRecipeCommandById(1L);
+        RecipeCommand recipeCommandById = recipeService.findRecipeCommandById("1");
 
         assertNotNull(recipeCommandById, "Null recipe command returned");
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, never()).findAll();
     }
 
@@ -97,18 +97,18 @@ class RecipeServiceImplTest {
 
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
-        verify(recipeRepository, never()).findById(anyLong());
+        verify(recipeRepository, never()).findById(anyString());
     }
 
     @Test
     void deleteById() {
         // Given
-        Long idToDelete = Long.valueOf(2L);
+        String idToDelete = "2";
 
         // When
         recipeService.deleteById(idToDelete);
 
         // Then
-        verify(recipeRepository, times(1)).deleteById(anyLong());
+        verify(recipeRepository, times(1)).deleteById(anyString());
     }
 }

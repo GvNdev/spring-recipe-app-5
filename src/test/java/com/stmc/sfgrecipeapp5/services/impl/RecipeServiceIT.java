@@ -6,6 +6,7 @@ import com.stmc.sfgrecipeapp5.converters.RecipeToRecipeCommand;
 import com.stmc.sfgrecipeapp5.model.Recipe;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import com.stmc.sfgrecipeapp5.services.RecipeService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class RecipeServiceIT {

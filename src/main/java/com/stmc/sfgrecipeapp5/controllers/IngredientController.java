@@ -28,25 +28,25 @@ public class IngredientController {
     public String listIngredients(@PathVariable("recipeId") String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
-        model.addAttribute("recipe", recipeService.findRecipeCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe", recipeService.findRecipeCommandById(recipeId));
         return "recipe/ingredient/list";
     }
 
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable("recipeId") String recipeId,
                                        @PathVariable("id") String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
         return "recipe/ingredient/show";
     }
 
     @GetMapping("/recipe/{recipeId}/ingredient/new")
     public String newRecipeIngredient(@PathVariable("recipeId") String recipeId, Model model) {
-        RecipeCommand  recipeCommand = recipeService.findRecipeCommandById(Long.valueOf(recipeId));
+        RecipeCommand  recipeCommand = recipeService.findRecipeCommandById(recipeId);
 
         // todo raise exception if null
 
         IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+        ingredientCommand.setRecipeId(recipeId);
         ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
         model.addAttribute("ingredient", ingredientCommand);
         model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures());
@@ -56,7 +56,7 @@ public class IngredientController {
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable("recipeId") String recipeId,
                                          @PathVariable("id") String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
         model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures());
         return "recipe/ingredient/ingredientform";
     }
@@ -72,7 +72,7 @@ public class IngredientController {
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/delete")
     public String deleteIngredient(@PathVariable("recipeId") String recipeId, @PathVariable("id") String id) {
         log.debug("Deleting ingredient id: " + id);
-        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+        ingredientService.deleteById(recipeId, id);
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }

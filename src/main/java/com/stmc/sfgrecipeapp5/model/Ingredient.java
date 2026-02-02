@@ -1,7 +1,5 @@
 package com.stmc.sfgrecipeapp5.model;
 
-import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,20 +7,12 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"recipe"})
-@Entity
 public class Ingredient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id;
     private String description;
     private BigDecimal amount;
 
-    @ManyToOne
     private UnitOfMeasure uom;
-
-    @ManyToOne
     private Recipe recipe;
 
     public Ingredient() {
