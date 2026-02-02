@@ -78,7 +78,6 @@ public class IngredientServiceImpl implements IngredientService {
                         .orElseThrow(() -> new RuntimeException("UNIT OF MEASURE NOT FOUND"))); // todo address this
             } else {
                 Ingredient ingredient = ingredientCommandToIngredient.convert(ingredientCommand);
-                ingredient.setRecipe(recipe);
                 recipe.addIngredient(ingredient);
             }
 
@@ -95,6 +94,12 @@ public class IngredientServiceImpl implements IngredientService {
                         .filter(recipeIngredients -> recipeIngredients.getUom().getId().equals(ingredientCommand.getUnitOfMeasure().getId()))
                         .findFirst();
             }
+
+            // todo check for fail
+
+            // Enhance with id value
+            IngredientCommand savedIngredientCommand = ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            savedIngredientCommand.setRecipeId(recipe.getId());
 
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }

@@ -110,10 +110,6 @@ tasks.register('integrationTest', Test) {
 tasks.register('jacocoMerge') {
     dependsOn tasks.named('test'), tasks.named('integrationTest')
 
-    // Archivos
-
-
-
     // Jar de JaCoCo cli (resuelto por configuración)
     def cliJarProvider = configurations.jacocoCli.elements.map { it.single().asFile }
 

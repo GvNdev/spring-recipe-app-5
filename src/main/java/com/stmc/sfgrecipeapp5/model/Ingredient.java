@@ -2,18 +2,21 @@ package com.stmc.sfgrecipeapp5.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class Ingredient {
+    @Id
     private String id;
     private String description;
     private BigDecimal amount;
 
+    @DBRef
     private UnitOfMeasure uom;
-    private Recipe recipe;
 
     public Ingredient() {
     }
@@ -28,6 +31,6 @@ public class Ingredient {
         this.description = description;
         this.amount = amount;
         this.uom = uom;
-        this.recipe = recipe;
+        //this.recipe = recipe;
     }
 }
