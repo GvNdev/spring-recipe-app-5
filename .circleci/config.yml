@@ -53,8 +53,7 @@ jobs:
             ls -la target/site || true
             find target -maxdepth 4 -type f -name "jacoco*.xml" -print || true
 
-      - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
+      - codecov/upload
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
