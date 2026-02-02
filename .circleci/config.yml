@@ -63,7 +63,7 @@ jobs:
             chmod +x codecov
             ./codecov --verbose upload-process --disable-search --fail-on-error \
               -t "${CODECOV_TOKEN}" \
-              -f target/sit/jacoco/jacoco.xml
+              -f target/site/jacoco/jacoco.xml
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
