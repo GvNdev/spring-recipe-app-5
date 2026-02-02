@@ -62,7 +62,7 @@ jobs:
             curl -Os https://cli.codecov.io/latest/linux/codecov
             chmod +x codecov
             ./codecov --verbose upload-process --disable-search --fail-on-error \
-              -t "${}" \
+              -t "${3afc4b38-2c1f-43c3-a6de-7861195551da}" \
               -f target/sit/jacoco/jacoco.xml
 
 # Orchestrate jobs using workflows
