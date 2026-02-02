@@ -42,10 +42,18 @@ jobs:
           name: Test + Coverage (UT + IT)
           command: mvn -B -ntp verify
 
+      - run:
+          name: Prepare JUnit test results (exclude non-JUnit xml)
+          command: |
+            mkdir -p test-results/surefire test-results/failsafe
+            cp -v target/surefire-reports/TEST-*.xml test-results/surefire/ || true
+            cp -v target/failsafe-reports/TEST-*.xml test-results/failsafe/ || true
+
       - store_test_results:
-          path: target/surefire-reports
-      - store_test_results:
-          path: target/failsafe-reports
+          path: test-results
+
+      - store_artifacts:
+          path: target/failsafe-reports/failsafe-summary.xml
 
       - run:
           name: Debug coverage files
