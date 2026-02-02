@@ -4,11 +4,14 @@ import com.stmc.sfgrecipeapp5.model.*;
 import com.stmc.sfgrecipeapp5.repositories.CategoryRepository;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import com.stmc.sfgrecipeapp5.repositories.UnitOfMeasureRepository;
+import com.stmc.sfgrecipeapp5.repositories.reactive.UnitOfMeasureReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,6 +25,9 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
+    @Autowired
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
+
     public RecipeBootstrap(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
@@ -29,11 +35,15 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         loadCategories();
         loadUnitsOfMeasure();
         recipeRepository.saveAll(getRecipes());
         log.debug("Loading Bootstrap data");
+
+        log.error("##########");
+        log.error(unitOfMeasureReactiveRepository.count().block().toString());
     }
 
     private void loadCategories() {
