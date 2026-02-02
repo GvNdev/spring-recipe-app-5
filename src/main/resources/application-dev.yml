@@ -9,3 +9,11 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     database: mysql
     show-sql: true
+#    properties:
+#      jakarta:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: stmc_database_create.sql
