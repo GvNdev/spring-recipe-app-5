@@ -104,38 +104,33 @@ tasks.register('integrationTest', Test) {
 }
 
 /** Merge UT + IT (equivalente a goal merge) */
-tasks.register('jacocoMerge', Exec) {
+tasks.register('jacocoMerge') {
     dependsOn tasks.named('test'), tasks.named('integrationTest')
 
     // Archivos
-    def utExec = file("$buildDir/jacoco/jacoco-ut.exec")
-    def itExec = file("$buildDir/jacoco/jacoco-it.exec")
-    def dest = file("$buildDir/jacoco/jacoco.exec")
+
+
 
     // Jar de JaCoCo cli (resuelto por configuración)
     def cliJarProvider = configurations.jacocoCli.elements.map { it.single().asFile }
 
     // Ejecuta: java -jar <cli> merge <ut> <it> --destfile <dest>
-    doFirst {
-        def cliJar = cliJarProvider.get()
-        def utFile = utExec.get().asFile
-        def itFile = itExec.get().asFile
-        def destFile = dest.get().asFile
+    doLast {
+        def utExec = file("$buildDir/jacoco/jacoco-ut.exec")
+        def itExec = file("$buildDir/jacoco/jacoco-it.exec")
 
-        // Si no existe alguno, no se rompe
         def execFiles = [utFile, itFile].findAll { f -> f.exists() }
         if (execFiles.isEmpty()) {
             logger.lifecycle("No JaCoCo exec files found to merge.")
-            // Cambiar comando a uno "no-op"
-            commandLine 'bash', '-lc', 'true'
             return
         }
 
-        commandLine {
-            'java', '-jar', cliJar.absolutePath,
-            'merge',
-            *execFiles.collect { it.absolutePath },
-            '--destfile', destFile.absolutePath
+        def dest = file("$buildDir/jacoco/jacoco.exec")
+
+        javaexec {
+            classpath = configurations.jacocoCli
+            mainClass = 'org.jacoco.cli.internal.Main'
+            args = (['merge'] + execFiles.collect { f -> f.absolutePath } + ['--destfile', dest.absolutePath])
         }
     }
 }

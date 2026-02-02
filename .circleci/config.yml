@@ -25,10 +25,19 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v2-gradle-deps-
 
+      # Ensure Gradle wrapper is executable (sometimes needed on Linux containers)
+      - run:
+          name: Prepare Gradle wrapper
+          command: |
+            ls -la ./gradlew
+            sed -i 's/\r$//' ./gradlew || true
+            chmod +x ./gradlew
+            ls -la ./gradlew
+
       # Warm up dependencies (similar intent to mvn dependency:go-offline
       - run:
           name: Warm Gradle dependencies
-          command: ./gradlew --no-daemon --refresh-dependencies dependencies || true
+          command: bash ./gradlew --no-daemon dependencies || true
 
       - save_cache:
           paths:
@@ -36,18 +45,10 @@ jobs:
             - ~/.gradle/wrapper
           key: v2-gradle-deps-{{ checksum "build.gradle" }}-{{ checksum "settings.gradle" }}
 
-      # Ensure Gradle wrapper is executable (sometimes needed on Linux containers)
-      - run:
-          name: Make Gradle wrapper executable
-          command: |
-            ls -la ./gradlew
-            chmod -x ./gradlew
-            ls -la ./gradlew
-
       # Run tests + coverage (UT + IT) and generate merged JaCoCo XML
       - run:
           name: Test + Coverage (UT + IT)
-          command: bash ./gradlew --no-daemon clean check
+          command: bash ./gradlew --no-daemon --no-configuration-cache clean check
 
       - run:
           name: Prepare JUnit test results
@@ -59,11 +60,6 @@ jobs:
       - store_test_results:
           path: test-results
 
-      # Optional artifacts (useful for debugging CI failures)
-      - store_artifacts:
-          path: build/reports/tests/test
-      - store_artifacts:
-          path: build/reports/tests/integrationTest
       - store_artifacts:
           path: build/reports/jacoco/jacoco.xml
 
@@ -83,7 +79,7 @@ jobs:
             ./codecov --verbose upload-process \
               -t "$CODECOV_TOKEN" \
               -r "$SLUG" \
-              -f "target/site/jacoco/jacoco.xml"
+              -f "build/reports/jacoco/jacoco.xml"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
