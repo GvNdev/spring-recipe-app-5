@@ -1,2 +1,3 @@
 fixes:
   - "com/stmc/::src/main/java/com/stmc/"
+  - "com/stmc/::src/test/java/com/stmc/"
