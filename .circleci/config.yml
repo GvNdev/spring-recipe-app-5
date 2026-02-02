@@ -4,9 +4,6 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
-orbs:
-  codecov: codecov/codecov@5
-
 jobs:
   build:
     docker:
@@ -56,28 +53,23 @@ jobs:
           path: target/failsafe-reports/failsafe-summary.xml
 
       - run:
-          name: Debug coverage files
+          name: Upload coverage to Codecov (explicit jacoco.xml)
           command: |
-            ls -la target/site || true
-            find target -maxdepth 4 -type f -name "jacoco*.xml" -print || true
-
-      - run:
-          name: Confirm jacoco.xml exists
-          command: |
-            ls -a target/site/jacoco || true
-            test -f target/site/jacoco/jacoco.xml && echo "OK: jacoco.xml exists" || (echo "MISSING jacoco.xml" && exit 1)
-
-      - run:
-          name: Verify Codecov config file exists in repo root
-          command: |
-            pwd
-            ls -la
-            find . -maxdepth 2 -name "codecov.y*ml" -print
-            test -f codecov.yml && echo "OK: codecov.yml found" || (echo "MISSING codecov.yml in repo root" && exit 1)
-
-      - codecov/upload:
-          flags: "ut,it"
-          verbose: true
+            echo "Branch: ${CIRCLE_BRANCH}"
+            echo "SHA: ${CIRCLE_SHA1}"
+            git rev-parse HEAD
+            
+            curl -Os https://cli.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov --version
+            
+            ./codecov --verbose upload-process \
+              --fail-on-error \
+              --disable-search \
+              -t "${CODECOV_TOKEN}" \
+              -n "circleci-${CIRCLE_BUILD_NUM}" \
+              -F "ut,it" \
+              -f "target/site/jacoco/jacoco.xml"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows

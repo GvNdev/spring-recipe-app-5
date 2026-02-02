@@ -1,3 +1,5 @@
+codecov:
+  branch: master
 fixes:
-  - "com/stmc/::src/main/java/com/stmc/"
-  - "com/stmc/::src/test/java/com/stmc/"
+  - "com/stmc/sfgrecipeapp5/::src/main/java/com/stmc/sfgrecipeapp5/"
+  - "com/stmc/sfgrecipeapp5/::src/test/java/com/stmc/sfgrecipeapp5/"
