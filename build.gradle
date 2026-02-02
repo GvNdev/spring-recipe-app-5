@@ -119,7 +119,7 @@ tasks.register('jacocoMerge') {
         def utExec = file("$buildDir/jacoco/jacoco-ut.exec")
         def itExec = file("$buildDir/jacoco/jacoco-it.exec")
 
-        def execFiles = [utFile, itFile].findAll { f -> f.exists() }
+        def execFiles = [utExec, itExec].findAll { f -> f.exists() }
         if (execFiles.isEmpty()) {
             logger.lifecycle("No JaCoCo exec files found to merge.")
             return
