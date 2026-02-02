@@ -53,34 +53,23 @@ jobs:
           path: target/failsafe-reports/failsafe-summary.xml
 
       - run:
-          name: Debug repo identity (CircleCI + Git)
+          name: Upload coverage to Codecov (force GitHub repo slug)
           command: |
-            echo "CIRCLE_PROJECT_USERNAME=$CIRCLE_PROJECT_USERNAME"
-            echo "CIRCLE_PROJECT_REPONAME=$CIRCLE_PROJECT_REPONAME"
-            echo "CIRCLE_BRANCH=$CIRCLE_BRANCH"
-            echo "CIRCLE_SHA1=$CIRCLE_SHA1"
-            git remote -v
-            git rev-parse HEAD
-            git branch --show-current || true
-
-      - run:
-          name: Upload coverage to Codecov (explicit jacoco.xml)
-          command: |
-            echo "Branch: ${CIRCLE_BRANCH}"
-            echo "SHA: ${CIRCLE_SHA1}"
-            git rev-parse HEAD
+            REPO_URL="$(git remote get-url origin)"
+            echo "origin=$REPO_URL"
+            
+            SLUG="$(echo "$REPO_URL" | sed -E 's#(https://github.com/|git@github.com:)([^/]+)/([^/.]+)(\.git)?#\2/\3#')"
+            echo "slug=$SLUG"
             
             curl -Os https://cli.codecov.io/latest/linux/codecov
             chmod +x codecov
             ./codecov --version
             
-            ./codecov --verbose upload-process \
-              --fail-on-error \
-              --disable-search \
-              -t "${CODECOV_TOKEN}" \
-              -n "circleci-${CIRCLE_BUILD_NUM}" \
-              -F "ut,it" \
-              -f "target/site/jacoco/jacoco.xml"
+            ./codecov upload-process \
+              -t "$CODECOV_TOKEN" \
+              -r "$SLUG" \
+              -f "target/site/jacoco/jacoco.xml" \
+              --verbose
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
