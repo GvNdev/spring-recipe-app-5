@@ -61,6 +61,7 @@ jobs:
             echo "CIRCLE_SHA1=$CIRCLE_SHA1"
             git remote -v
             git rev-parse HEAD
+            git branch --show-current || true
 
       - run:
           name: Upload coverage to Codecov (explicit jacoco.xml)
