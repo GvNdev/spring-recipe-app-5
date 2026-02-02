@@ -1,0 +1,151 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.0-SNAPSHOT'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'jacoco'
+}
+
+group = 'com.stmc'
+version = '0.0.1-SNAPSHOT'
+description = 'sfg-recipe-app-5'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = uri('https://repo.spring.io/milestone') }
+    maven { url = uri('https://repo.spring.io/snapshot') }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:4.1.0-SNAPSHOT"
+    }
+}
+
+configurations {
+    jacocoCli
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-h2console'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // igual a "optional runtime" en Maven (solo para dev)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // en tu pom estaba pinneado a M1
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Lombok bien configurado
+    def lombokVersion = '1.18.34'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation 'org.webjars:bootstrap:5.3.8'
+    implementation 'org.webjars:jquery:3.7.1'
+
+    jacocoCli 'org.jacoco:org.jacoco.cli:0.8.14'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+/** JaCoCo */
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+/** Unit tests (como Surefire): excluye IT */
+tasks.named('test', Test) {
+    useJUnitPlatform()
+    exclude '**/*IT.*'
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacoco-ut.exec")
+    }
+}
+
+/** Integration tests (como Failsafe): solo *IT */
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests (*IT).'
+    group = 'verification'
+
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    include '**/*IT.*'
+    shouldRunAfter tasks.test
+
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacoco-it.exec")
+    }
+}
+
+/** Merge UT + IT (equivalente a goal merge) */
+tasks.register('jacocoMerge') {
+    dependsOn tasks.named('test'), tasks.named('integrationTest')
+
+    doLast {
+        def utExec = file("$buildDir/jacoco/jacoco-ut.exec")
+        def itExec = file("$buildDir/jacoco/jacoco-it.exec")
+
+        def execFiles = [utExec, itExec].findAll { f -> f.exists() }
+        if (execFiles.isEmpty()) {
+            logger.lifecycle("No JaCoCo exec files found to merge.")
+            return
+        }
+
+        def dest = file("$buildDir/jacoco/jacoco.exec")
+
+        javaexec {
+            classpath = configurations.jacocoCli
+            mainClass = 'org.jacoco.cli.internal.Main'
+            args = (['merge'] + execFiles.collect { f -> f.absolutePath } + ['--destfile', dest.absolutePath])
+        }
+    }
+}
+
+/** Report único (XML para Codecov) */
+tasks.register('jacocoMergedReport', JacocoReport) {
+    dependsOn tasks.named('jacocoMerge')
+
+    executionData file("$buildDir/jacoco/jacoco.exec")
+    classDirectories.from files(sourceSets.main.output)
+    sourceDirectories.from files(sourceSets.main.allSource.srcDirs)
+
+    reports {
+        xml.required = true
+        xml.outputLocation = file("$buildDir/reports/jacoco/jacoco.xml")
+        html.required = true
+        html.outputLocation = file("$buildDir/reports/jacoco/html")
+        csv.required = false
+    }
+}
+
+/** check = test + integrationTest + reporte */
+tasks.named('check') {
+    dependsOn tasks.named('integrationTest')
+    dependsOn tasks.named('jacocoMergedReport')
+}

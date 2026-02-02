@@ -31,3 +31,36 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Java
+*.class
+*.log
+hs_err_pid*
+replay_pid*
+*.ctxt
+
+### Spring Boot
+# logs locales
+logs/
+*.log
+
+### Maven (por si queda pom.xml / target por transición)
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+### Coverage / Reports
+**/jacoco*.exec
+**/reports/
+test-results/
