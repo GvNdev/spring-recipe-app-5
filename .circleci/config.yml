@@ -53,6 +53,12 @@ jobs:
             ls -la target/site || true
             find target -maxdepth 4 -type f -name "jacoco*.xml" -print || true
 
+      - run:
+          name: Confirm jacoco.xml exists
+          command: |
+            ls -a target/site/jacoco || true
+            test -f target/site/jacoco/jacoco.xml && echo "OK: jacoco.xml exists" || (echo "MISSING jacoco.xml" && exit 1)
+
       - codecov/upload
 
 # Orchestrate jobs using workflows
