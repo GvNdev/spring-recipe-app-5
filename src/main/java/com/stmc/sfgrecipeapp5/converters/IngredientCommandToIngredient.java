@@ -7,6 +7,9 @@ import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.util.UUID;
 
 @Component
 public class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
@@ -16,6 +19,7 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         this.uomConverter = uomConverter;
     }
 
+    @Synchronized
     @Nullable
     @Override
     public Ingredient convert(IngredientCommand ingredientCommand) {
@@ -24,16 +28,15 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         }
 
         final Ingredient ingredient = new Ingredient();
-        ingredient.setId(ingredientCommand.getId());
 
-        if (ingredientCommand.getRecipeId() != null) {
-            Recipe recipe = new Recipe();
-            recipe.setId(ingredientCommand.getRecipeId());
-            recipe.addIngredient(ingredient);
+        if (StringUtils.hasText(ingredientCommand.getId())) {
+            ingredient.setId(ingredientCommand.getId());
+        } else {
+            ingredient.setId(UUID.randomUUID().toString());
         }
 
-        ingredient.setAmount(ingredientCommand.getAmount());
         ingredient.setDescription(ingredientCommand.getDescription());
+        ingredient.setAmount(ingredientCommand.getAmount());
         ingredient.setUom(uomConverter.convert(ingredientCommand.getUnitOfMeasure()));
         return ingredient;
     }

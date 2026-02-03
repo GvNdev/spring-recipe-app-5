@@ -36,6 +36,11 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        if (recipeRepository.count() > 0) {
+            log.info("Bootstrap already executed. Skipping.");
+            return;
+        }
+
         loadCategories();
         loadUnitsOfMeasure();
         recipeRepository.saveAll(getRecipes());
