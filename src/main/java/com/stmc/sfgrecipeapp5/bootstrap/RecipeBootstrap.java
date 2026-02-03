@@ -4,6 +4,8 @@ import com.stmc.sfgrecipeapp5.model.*;
 import com.stmc.sfgrecipeapp5.repositories.CategoryRepository;
 import com.stmc.sfgrecipeapp5.repositories.RecipeRepository;
 import com.stmc.sfgrecipeapp5.repositories.UnitOfMeasureRepository;
+import com.stmc.sfgrecipeapp5.repositories.reactive.CategoryReactiveRepository;
+import com.stmc.sfgrecipeapp5.repositories.reactive.RecipeReactiveRepository;
 import com.stmc.sfgrecipeapp5.repositories.reactive.UnitOfMeasureReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    @Autowired
-    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
-
     public RecipeBootstrap(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
@@ -41,9 +40,6 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         loadUnitsOfMeasure();
         recipeRepository.saveAll(getRecipes());
         log.debug("Loading Bootstrap data");
-
-        log.error("##########");
-        log.error(unitOfMeasureReactiveRepository.count().block().toString());
     }
 
     private void loadCategories() {
