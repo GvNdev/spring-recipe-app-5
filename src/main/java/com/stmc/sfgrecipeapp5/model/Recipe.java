@@ -1,10 +1,8 @@
 package com.stmc.sfgrecipeapp5.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -27,8 +25,6 @@ public class Recipe {
     private Byte[] image;
     private Difficulty difficulty;
     private Notes notes;
-
-    @DBRef
     private Set<Category> categories = new HashSet<>();
 
     public void setNotes(Notes notes) {

@@ -41,7 +41,7 @@ public class IngredientController {
 
     @GetMapping("/recipe/{recipeId}/ingredient/new")
     public String newRecipeIngredient(@PathVariable("recipeId") String recipeId, Model model) {
-        RecipeCommand  recipeCommand = recipeService.findRecipeCommandById(recipeId);
+        RecipeCommand  recipeCommand = recipeService.findRecipeCommandById(recipeId).block();
 
         // todo raise exception if null
 
