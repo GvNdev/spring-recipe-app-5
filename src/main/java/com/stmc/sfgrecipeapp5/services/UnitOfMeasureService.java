@@ -1,9 +1,8 @@
 package com.stmc.sfgrecipeapp5.services;
 
 import com.stmc.sfgrecipeapp5.commands.UnitOfMeasureCommand;
-
-import java.util.Set;
+import reactor.core.publisher.Flux;
 
 public interface UnitOfMeasureService {
-    Set<UnitOfMeasureCommand> listAllUnitOfMeasures();
+    Flux<UnitOfMeasureCommand> listAllUnitOfMeasures();
 }

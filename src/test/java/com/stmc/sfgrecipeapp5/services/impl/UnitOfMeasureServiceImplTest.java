@@ -3,14 +3,16 @@ package com.stmc.sfgrecipeapp5.services.impl;
 import com.stmc.sfgrecipeapp5.commands.UnitOfMeasureCommand;
 import com.stmc.sfgrecipeapp5.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import com.stmc.sfgrecipeapp5.model.UnitOfMeasure;
-import com.stmc.sfgrecipeapp5.repositories.UnitOfMeasureRepository;
+import com.stmc.sfgrecipeapp5.repositories.reactive.UnitOfMeasureReactiveRepository;
 import com.stmc.sfgrecipeapp5.services.UnitOfMeasureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,15 +20,15 @@ import static org.mockito.Mockito.*;
 
 class UnitOfMeasureServiceImplTest {
     UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand = new UnitOfMeasureToUnitOfMeasureCommand();
-    UnitOfMeasureService service;
+    UnitOfMeasureService unitOfMeasureService;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new UnitOfMeasureServiceImpl(unitOfMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
+        unitOfMeasureService = new UnitOfMeasureServiceImpl(unitOfMeasureReactiveRepository, unitOfMeasureToUnitOfMeasureCommand);
     }
 
     @Test
@@ -41,13 +43,13 @@ class UnitOfMeasureServiceImplTest {
         unitOfMeasure2.setId("2");
         unitOfMeasures.add(unitOfMeasure2);
 
-        when(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures);
+        when(unitOfMeasureReactiveRepository.findAll()).thenReturn(Flux.just(unitOfMeasure1, unitOfMeasure2));
 
         // When
-        Set<UnitOfMeasureCommand> unitOfMeasureCommands = service.listAllUnitOfMeasures();
+        List<UnitOfMeasureCommand> unitOfMeasureCommands = unitOfMeasureService.listAllUnitOfMeasures().collectList().block();
 
         // Then
         assertEquals(2, unitOfMeasureCommands.size());
-        verify(unitOfMeasureRepository, times(1)).findAll();
+        verify(unitOfMeasureReactiveRepository, times(1)).findAll();
     }
 }

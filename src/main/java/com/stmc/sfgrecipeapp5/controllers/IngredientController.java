@@ -46,10 +46,10 @@ public class IngredientController {
         // todo raise exception if null
 
         IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setRecipeId(recipeId);
-        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
         model.addAttribute("ingredient", ingredientCommand);
-        model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures());
+
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures().collectList().block());
         return "recipe/ingredient/ingredientform";
     }
 
@@ -57,7 +57,7 @@ public class IngredientController {
     public String updateRecipeIngredient(@PathVariable("recipeId") String recipeId,
                                          @PathVariable("id") String id, Model model) {
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
-        model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures());
+        model.addAttribute("uomList", unitOfMeasureService.listAllUnitOfMeasures().collectList().block());
         return "recipe/ingredient/ingredientform";
     }
 

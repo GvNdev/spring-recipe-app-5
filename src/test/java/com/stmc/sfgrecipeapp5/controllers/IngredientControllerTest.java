@@ -2,6 +2,8 @@ package com.stmc.sfgrecipeapp5.controllers;
 
 import com.stmc.sfgrecipeapp5.commands.IngredientCommand;
 import com.stmc.sfgrecipeapp5.commands.RecipeCommand;
+import com.stmc.sfgrecipeapp5.commands.UnitOfMeasureCommand;
+import com.stmc.sfgrecipeapp5.model.UnitOfMeasure;
 import com.stmc.sfgrecipeapp5.services.IngredientService;
 import com.stmc.sfgrecipeapp5.services.RecipeService;
 import com.stmc.sfgrecipeapp5.services.UnitOfMeasureService;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Flux;
 
 import java.util.HashSet;
 
@@ -80,7 +83,7 @@ class IngredientControllerTest {
 
         // When
         when(recipeService.findRecipeCommandById(anyString())).thenReturn(recipeCommand);
-        when(unitOfMeasureService.listAllUnitOfMeasures()).thenReturn(new HashSet<>());
+        when(unitOfMeasureService.listAllUnitOfMeasures()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
         // Then
         mockMvc.perform(get("/recipe/1/ingredient/new"))
@@ -98,7 +101,7 @@ class IngredientControllerTest {
 
         // When
         when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand);
-        when(unitOfMeasureService.listAllUnitOfMeasures()).thenReturn(new HashSet<>());
+        when(unitOfMeasureService.listAllUnitOfMeasures()).thenReturn(Flux.just(new UnitOfMeasureCommand()));
 
         // Then
         mockMvc.perform(get("/recipe/1/ingredient/2/update"))
